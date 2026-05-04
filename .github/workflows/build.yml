@@ -1,0 +1,98 @@
+name: Build & Release APK
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Set up JDK 17
+      uses: actions/setup-java@v4
+      with:
+        java-version: '17'
+        distribution: 'temurin'
+
+    - name: Grant execute permission for gradlew
+      run: chmod +x gradlew
+
+    - name: Build Debug APK
+      run: ./gradlew assembleDebug
+
+    - name: Build Release APK
+      run: ./gradlew assembleRelease
+
+    - name: Upload Debug APK
+      uses: actions/upload-artifact@v4
+      with:
+        name: nx-ide-debug
+        path: app/build/outputs/apk/debug/*.apk
+
+    - name: Upload Release APK
+      uses: actions/upload-artifact@v4
+      with:
+        name: nx-ide-release
+        path: app/build/outputs/apk/release/*.apk
+
+  release:
+    needs: build
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+
+    permissions:
+      contents: write
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Download Debug APK
+      uses: actions/download-artifact@v4
+      with:
+        name: nx-ide-debug
+        path: ./artifacts/debug
+
+    - name: Download Release APK
+      uses: actions/download-artifact@v4
+      with:
+        name: nx-ide-release
+        path: ./artifacts/release
+
+    - name: Create Release
+      uses: softprops/action-gh-release@v1
+      with:
+        tag_name: v1.0.0
+        name: NX IDE v1.0.0
+        body: |
+          ## 🤖 NX IDE - AI 驱动的安卓开发环境
+
+          ### ✨ 功能特性
+          - 📝 Kotlin/XML/Gradle 语法高亮代码编辑器
+          - 📋 20+ 安卓项目模板
+          - 🔨 可视化构建系统
+          - 📋 Logcat 日志查看
+          - 💻 内置终端
+          - 📐 Layout Inspector
+          - 🤖 AI 助手
+
+          ### 📦 下载
+          - **Debug 版本**: `nx-ide-debug.apk` - 开发调试版本
+          - **Release 版本**: `nx-ide-release.apk` - 正式发布版本
+
+          ### 🛠️ 技术栈
+          - Kotlin + Jetpack Compose + Material3
+          - MVVM + StateFlow
+          - Android 8.0+ (API 26+)
+        files: |
+          ./artifacts/debug/*.apk
+          ./artifacts/release/*.apk
+        draft: false
+        prerelease: false
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

@@ -11,6 +11,7 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.*
+import kotlin.random.Random
 
 data class NxIdeState(
     val activeTab: MainTab = MainTab.PROJECT,
@@ -119,7 +120,7 @@ class NxIdeViewModel : ViewModel() {
                         }
                     )
                 }
-                delay(durations[i] + Random().nextInt(200))
+                delay(durations[i] + Random.nextInt(200))
                 _state.update { current ->
                     current.copy(
                         buildSteps = current.buildSteps.map { s ->
@@ -220,7 +221,7 @@ class NxIdeViewModel : ViewModel() {
         }
 
         viewModelScope.launch {
-            delay(1000 + Random().nextInt(1500))
+            delay(1000 + Random.nextInt(1500))
 
             val response = generateAiResponse(prompt)
             _state.update { current ->

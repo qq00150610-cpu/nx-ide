@@ -120,7 +120,7 @@ class NxIdeViewModel : ViewModel() {
                         }
                     )
                 }
-                delay(durations[i] + Random.nextInt(200))
+                delay(durations[i] + Random.nextInt(200).toLong())
                 _state.update { current ->
                     current.copy(
                         buildSteps = current.buildSteps.map { s ->
@@ -221,7 +221,7 @@ class NxIdeViewModel : ViewModel() {
         }
 
         viewModelScope.launch {
-            delay(1000 + Random.nextInt(1500))
+            delay(1000L + Random.nextInt(1500))
 
             val response = generateAiResponse(prompt)
             _state.update { current ->

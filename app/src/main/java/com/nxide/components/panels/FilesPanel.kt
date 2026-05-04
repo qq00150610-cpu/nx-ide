@@ -4,6 +4,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
@@ -18,7 +19,7 @@ import com.nxide.ui.theme.*
 
 data class ProjectFile(
     val name: String,
-    val type: String,
+    val fileType: String,
     val size: String,
     val modified: String
 )
@@ -60,7 +61,7 @@ fun FilesPanel(modifier: Modifier = Modifier) {
 
         // File rows
         LazyColumn(modifier = Modifier.weight(1f)) {
-            items(projectFiles) { file ->
+            items(projectFiles, key = { it.name }) { file ->
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -75,7 +76,7 @@ fun FilesPanel(modifier: Modifier = Modifier) {
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         Text(
-                            when (file.type) {
+                            when (file.fileType) {
                                 "kotlin" -> "🟣"
                                 "xml" -> "🔵"
                                 "gradle" -> "🟢"

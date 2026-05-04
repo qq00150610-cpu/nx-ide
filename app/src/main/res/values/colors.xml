@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="nx_green">#FF4ADE80</color>
+    <color name="nx_blue">#FF60A5FA</color>
+    <color name="nx_purple">#FFA78BFA</color>
+    <color name="nx_bg_primary">#FF1A1A2E</color>
+    <color name="nx_bg_secondary">#FF16213E</color>
+    <color name="nx_bg_tertiary">#FF0F3460</color>
+    <color name="nx_text_primary">#FFE0E0E0</color>
+    <color name="nx_text_secondary">#FFA0A0B0</color>
+    <color name="nx_text_muted">#FF6A6A7A</color>
+    <color name="nx_border">#FF2A3A5A</color>
+</resources>
